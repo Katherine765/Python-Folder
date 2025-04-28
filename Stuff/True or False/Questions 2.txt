@@ -1,0 +1,20 @@
+It costs US Mint more to make pennies and nickels than the coins are actually worth.
+true
+There are more cells of bacteria in your body than there are human cells.
+true
+Your fingernails and hair keep growing after you die.
+false
+When you get anxious, your pets can get anxious too.
+true
+There is an animal called the sea carrot.
+false
+Rat's can burp.
+false
+It's impossible to see a full rainbow at noon.
+true
+Newborn dolphins sleep for only a few seconds at a time.
+true
+It takes a long time for a newborn guinea pig to learn how to walk.
+false
+Some parrots dance when they hear music.
+true

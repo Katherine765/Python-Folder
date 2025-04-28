@@ -1,0 +1,20 @@
+Lightning never strikes the same place twice.
+false
+If you cry in space, the tears just stick to your face.
+true
+If you cut an earthworm in half, both halves can regrow their body.
+false
+Water spirals down the plughole in oppostie directions in the northern and southern hemispheres.
+false
+Twinkies have infinite shelf life.
+false
+Humans can't breathe and swallow at the same time.
+true
+The Eiffel Tower leans away from the sun.
+false
+Humans can distinguish between over a trillion different smells.
+true
+Adults have fewer bones than babies do.
+true
+Goldfish only have memory of three seconds.
+false

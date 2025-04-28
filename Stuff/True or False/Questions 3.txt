@@ -1,0 +1,20 @@
+Sharks don't have bones.
+true
+Earth is named after a Greek god.
+false
+It's impossible to smell scents in dreams.
+false
+Apes laugh when tickled.
+true
+Most pirates buried their loot.
+false
+There is real gold in the sun.
+true
+Pigs can get sunburned.
+true
+A cloud can weigh more than a million pounds.
+true
+Honey spoils after about a year.
+false
+Your bones are harder than your teeth.
+false

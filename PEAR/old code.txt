@@ -1,0 +1,134 @@
+        '''funcs.operate_app((('Append task', s.append_task), ('Remove task', s.remove_task), ('Clear tasks', s.clear_tasks),('View tasks', s.view_tasks)))#, ('View tasks by due date', s.view_tasks_by_due_date), ('View tasks of tags', s.view_tasks_of_tag)))
+        root = Tk()
+        root.title('To do')
+        c = Canvas(root, width = 500, height = 300)#, bg='#fdedec')
+        c.pack()'''
+
+
+'''def operate_app(menu):
+    app_open = True
+    while app_open:
+        view_list([option[0] for option in menu])
+        selection = input('Selection or quit:  ')
+
+        if selection == "quit":
+            app_open = False
+        elif selection.isdigit() and int(selection) in range(len(menu)):
+            menu[int(selection)][1]()
+        else:
+            print('Selection or quit unsuccessful.\n')'''
+
+
+#condition = msn.find("img", class_="summaryTemperatureIcon-E1_1").get("title")
+#temp = msn.find("a", class_="summaryTemperatureCompact-E1_1 summaryTemperatureHover-E1_1").get("title")
+#feels_like = msn.find("a", class_="summaryFeelLikeContainerCompact-E1_1 detailItemGroupHover-E1_1").find_all("div")[1].text  # in 2nd div
+#desc = msn.find("p",class_="summaryDescCompact-E1_1").text
+
+'''
+html = requests.get('https://www.msn.com/en-us/weather/forecast/in-Catonsville,MD').text
+msn = BeautifulSoup(html, "html.parser")
+
+# CURRENT details as opposed to <1hr from now
+humidity = msn.find("div", id="CurrentDetailLineHumidityValue").find("span").text 
+visibility = msn.find("div", id="CurrentDetailLineVisibilityValue").find("span").text
+pressure = msn.find("div", id="CurrentDetailLinePressureValue").find("span").text
+#dew_point = msn.find("div", id="CurrentDetailLineDewPointValue").find("span").text
+wind = msn.find("div", id="CurrentDetailLineWindValue").text
+# doesn't have cloud cover or uv index
+'''
+
+# HOURLY
+temps = fox.select('.weather-hourly .temp')
+feels_likes = fox.select('.weather-hourly .value')
+descs = fox.select('.weather-hourly .phrase')
+detail_order = ['wind','pressure','humidity','uv','visibility','cloud cover']
+details = fox.select('.weather-hourly .weather-details .value')
+hours = []
+for i in range(12):
+    hours.append({'temp':temps[i].text.strip(), 'feels_like':feels_likes[i].text.strip(),'desc':descs[i].text.strip()})
+    for j,detail in enumerate(details[i*6:i*6+6]):
+       hours[i][detail_order[j]] = detail.text.strip()
+
+# DAILY
+lows = fox.select('.weather-daily .low')
+highs = fox.select('.weather-daily .high')
+descs = fox.select('.weather-daily .phrase')
+#precips = fox.select('.weather-daily .precip') # not all of them include precip???
+details = fox.select('.weather-daily .weather-details .value')
+
+detail_order = ['feels like', 'wind','humidity','uv', 'sunrise','sunset']
+
+# starts with yesterday and is a week
+days = []
+for i in range(8):
+   days.append({'low':lows[i].text.strip(), 'high':highs[i].text.strip(), 'desc':descs[i].text.strip()})#, 'precip':precips[i].text.strip()})
+   for j,detail in enumerate(details[i*6:i*6+6]):
+       days[i][detail_order[j]] = detail.text.strip()
+
+
+'''
+
+# can use msn or fox
+import requests
+from bs4 import BeautifulSoup
+
+html = requests.get('https://www.msn.com/en-us/weather/forecast/in-Catonsville,MD').text
+msn = BeautifulSoup(html, "html.parser")
+
+condition = msn.find("img", class_="summaryTemperatureIcon-E1_1").get("title")
+temp = msn.find("a", class_="summaryTemperatureCompact-E1_1 summaryTemperatureHover-E1_1").get("title")
+feels_like = msn.find("a", class_="summaryFeelLikeContainerCompact-E1_1 detailItemGroupHover-E1_1").find_all("div")[1].text  # in 2nd div
+desc = msn.find("p",class_="summaryDescCompact-E1_1").text
+humidity = msn.find("div", id="CurrentDetailLineHumidityValue").find("span").text
+visibility = msn.find("div", id="CurrentDetailLineVisibilityValue").find("span").text
+pressure = msn.find("div", id="CurrentDetailLinePressureValue").find("span").text
+dew_point = msn.find("div", id="CurrentDetailLineDewPointValue").find("span").text
+wind = msn.find("div", id="CurrentDetailLineWindValue").text
+# make it so you can set the city
+# figure out current hour / day so know what each thing means
+
+import requests
+from bs4 import BeautifulSoup
+
+html = requests.get('https://www.foxweather.com/local-weather/maryland/catonsville').text
+fox = BeautifulSoup(html, "html.parser")
+
+
+# more detailed path if necessary to get the right number of returns
+attributes = {'.weather-current':{'temp':' .current','feels like':' .value','condition':' .phrase','high':' .high','low':' .low'}, \
+              '.weather-hourly' :{'temp':' .temp.hour','feels like':' .card .top .left .feels-like .value','condition':' .bottom .phrase'}, \
+              '.weather-daily'  :{'desc':' .daily .card .bottom .phrase'}}#{'high':' .daily .high','low':' .daily .low','desc':' .daily .card .bottom .phrase'}} alr in desc so this would be redundant
+
+
+def get_attributes(start):
+    result = []
+    data = {key:fox.select(val) for key, val in attributes[start].items()} # attribute : listish of data for every day or whatever
+    n = len(list(data.values())[0])
+
+    for i in range(n): # for each day or whatever we are getting attributes for
+        result.append({})
+        for attribute, sub_data in data.items():
+            result[i][attribute] = sub_data[i].text.strip()
+    return result
+
+
+
+details = {'.weather-current':['uv','air quality','wind','rain'], '.weather-hourly':['wind','pressure','humidity','uv','visiblity','cloud cover'], '.weather-daily':['high feels like','wind','humidity','uv','sunrise','sunset']}
+def get_details(start):
+    data = fox.select(start+' .weather-details .value')
+    result = []
+    n = len(data)//len(details[start]) # num sections (ex. how many hours)
+    #print(n)
+    for i in range(n):
+        result.append({})
+        for j, detail in enumerate(details[start]):
+            result[i][detail] = data[i*len(details)+j].text.strip()
+    return result
+
+
+
+'''
+today = fox.select_one('.card-today .phrase').text.strip()
+tonight = fox.select_one('.card-tonight .phrase').text.strip()
+tomorrow = fox.select_one('.card-tomorrow .phrase').text.strip()
+'''
